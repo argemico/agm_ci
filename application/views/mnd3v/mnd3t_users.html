@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="{base_url}/js/jquery-1.11.2.js"></script>
+<script type="text/javascript" src="{base_url}/js/jquery-ui.min.js" ></script>
+<script type="text/javascript" src="{base_url}/js/mnd3js.js" ></script>
+<!--<script src="{base_url}/bootstrap332dist/js/bootstrap.min.js"></script>-->
+<script language="JavaScript">
+var gbase="{base_url}"
+</script> 
+<link rel="stylesheet" type="text/css" href="{base_url}/css/mnd3s.css" />
+<!--<link href="{base_url}/bootstrap332dist/css/bootstrap.min.css" rel="stylesheet">-->
+</head>
+<!-- BODY -->
+<body>
+<p id="tipucda">{tipucda}</p>
+<div id="ultp">
+<!--Aici se incarca mnd3t_ultp.html cu JQuery Ajax, in evenimentul window.onload() si la sortare/filtrare-->
+</div>
+<table id="filttable" border='1'>
+  <!-- Randul de filtrare -->
+  <tr id="filtrare" style="background-color:green">
+  <form name="formfilt">
+    <td><input type="text" name="username_filt" id="f_username" /></td>
+    <td><input type="text" name="name_filt" id="f_name" /></td>
+    <td><input type="text" name="email_filt" id="f_email" /></td>
+    <td><input type="text" name="phone_filt" id="f_phone" /></td>
+    <td><select name="dentipu_sel" id="f_dentipu">
+      <option value="0"></option>
+      {tipulist}
+        <option value="{codtipu}">{dentipu}</option>
+      {/tipulist}
+    </select></td>
+    <td><select name="dengrupv_sel" id="f_dengrupv">
+      <option value="0"></option>
+      {grupvlist}
+        <option value="{codgrupv}">{dengrupv}</option>
+      {/grupvlist}
+    </select></td>
+    <td> <input type="Button" onclick="filt()" name="Filtru" value="Filtru" /> </td>
+  </form>
+  </tr>
+</table>
+<input type="Button" onclick="userappend()" value="Adaugare" id="apendbt"/>
+<!--fereatra modala-->
+<div id="modaluser">
+  <div>
+  <form name="formuser">
+    <p id="modaltitle" style="text-align:center;">Editare</p>
+    <table>
+      <tr><td>Username</td><td><input type="text" name="username" /></td></tr>
+      <tr><td>Parola</td><td><input type="text" name="password"
+         title="Trebuie sa contina o litera mare si o cifra sau liniuta"/></td></tr>
+      <tr><td>Nume</td><td><input type="text" name="name" /></td></tr>
+      <tr><td>Email</td><td><input type="text" name="email" /></td></tr>
+      <tr><td>Telefon</td><td><input type="text" name="phone"
+         title="Format 999-999-9999"/></td></tr>
+      <tr><td>Descriere User</td><td><textarea name="description" cols="30" rows="3" ></textarea></td></tr>
+      <!-- daca se introduce tagul select in table nu se incarca cu optiuni !?! -->
+    </table>
+    <p>Tip User<select name="dentipu_sel">
+      {tipulist}
+        <option value="{codtipu}">{dentipu}</option>
+      {/tipulist}
+    </select></p>
+    <p>Grupa de varsta<select name="dengrupv_sel" id="grvselid">
+      {grupvlist}
+        <option value="{codgrupv}">{dengrupv}</option>
+      {/grupvlist}
+     </select>
+     <input type="Button" onclick="grvedit()" name="grveditn" value="Editeaza grupe varsta" id="bt_grvedit" />
+    </p>
+    <p> <input type="Button" onclick="userrecord()" name="inreg" value="Inregistreaza" id="bt_inreg" /> </p>
+      <p id="errmes">no message</p>
+    <p> <input type="Button" onclick="iesmodal()" name="Iesire" value="Iesire" /></p> 
+  </form>
+  </div>
+</div>
+<div id="modalgrv">
+ <div>
+  <form name="grvlistform">
+   <div id="grvtp" style="width:350px; border-style:none;" >
+   <!-- Aici se incarca mnd3_grvtp.php cu JQuery Ajax, in evenimentul window.onload() -->
+   </div>
+   <input type="hidden" name="cdagrv" value="" />
+   <input type="Button" onclick="grvappend()" value="Adaug" id="grvapendbt" />
+   <input type="Button" onclick="grvmodif()" value="Modific" id="grvmodifbt "/>
+   <input type="Button" onclick="grvdelete()" value="Sterg" id="grvdelbt "/>
+   <p>Cod_grupa<input type="text" name="codgrv" size="2" />   Denumire_grupa<input type="text" name="dengrv" size="40" /></P>
+   <input type="Button" onclick="grvrecord()" value="Inregistrez" id="grvrecbt "/>
+   <p id="errmesgrv" style="color:grey">no message</p>
+   <p> <input type="Button" onclick="iesgrvmodal()" name="Iesire" value="Iesire" /></p> 
+  </form>
+ </div>
+</div>
+</body>

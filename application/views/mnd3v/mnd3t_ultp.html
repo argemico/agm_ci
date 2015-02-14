@@ -1,0 +1,24 @@
+<table border='1'>
+  <tr>
+    <th onclick="fsort(1)" id="t_username">User</th>
+    <th onclick="fsort(2)" id="t_name">Nume</th>
+    <th onclick="fsort(3)" id="t_email">Email</th>
+    <th onclick="fsort(4)" id="t_phone">Telefon</th>
+    <th onclick="fsort(5)" id="t_dentipu">TipUser</th>
+    <th onclick="fsort(6)" id="t_dengrupv">GrupaVarsta</th>
+	 <th></th>
+  </tr>
+  <!--tabela propriuzisa-->
+  {userlist}
+    <!--<tr id='{username}' onclick="userrowclick('{username}','{name}','{email}','{phone}','{codtipu}','{codgrupv}','{description}')">-->
+    <tr id='{username}' >
+      <td title="Click pentru Modificare date user" onclick="userrowclick('{username}','{name}','{email}','{phone}','{codtipu}','{codgrupv}','{description}')">{username}</td>
+      <td title="{description}">{name}</td> 
+      <td>{email}</td> 
+      <td>{phone}</td> 
+      <b><td>{dentipu}</td> </b>
+      <td>{dengrupv}</td>
+		<td title="Click pentru Eliminare user" onclick="fdel('{username}')" style="Color:brown">Del</td>
+	 </tr>
+  {/userlist}
+</table>
