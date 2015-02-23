@@ -23,3 +23,5 @@ Fisierele proprii sunt:
 Adresa github repository a acestui readme:
  https://github.com/argemico/agm_ci
  
+ 23.02.2015 - Am facut o corectie in config.php
+ 
