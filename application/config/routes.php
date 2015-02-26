@@ -37,8 +37,11 @@
 | in the URL cannot be matched to a valid route.
 |
 */
-
-$route['default_controller'] = "welcome";
+//argumentul array-ului este ceea ce se specifica dupa url-ul aplicatiei (url_apl=http://localhost/agm_ci/)
+//valoarea din dreapta este ceea ce apare dupa index.php intr-o adresare absoluta
+//deci daca nu se introduce nimic dupa url aplic, atunci se merge la adresa url_aplic/index.php/mnd3c/login
+// adica se lanseaza functia login din clasa mnd3c
+$route['default_controller'] = "mnd3c/login";
 $route['404_override'] = '';
 
 

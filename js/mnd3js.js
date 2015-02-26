@@ -1,24 +1,24 @@
 //MND3JS
 
 //var globale
-var sFilt="-"	//expresia de filtrare (se foloseste si in procedura de sortare)
-var gtipu=""		//indicator tip lansare pagina users: A=Admin, U=user
+var sFilt="-";	//expresia de filtrare (se foloseste si in procedura de sortare)
+var gtipu="";		//indicator tip lansare pagina users: A=Admin, U=user
 
 window.onload = function() {
 var cuser=document.getElementById("tipucda").innerHTML
-if (cuser=='') gtipu="A"
-else gtipu="U"
-if (gtipu=='A') {    //admin
-	filt()		//incarca tabela cu lista de useri, nefiltrata
-   grvlistload()  //incarca tabela cu lista de grupe varsta in fereastra modala grv
+if (cuser==='') gtipu="A";
+else gtipu="U";
+if (gtipu==='A') {    //admin
+	filt();		//incarca tabela cu lista de useri, nefiltrata
+   grvlistload();  //incarca tabela cu lista de grupe varsta in fereastra modala grv
 	}
 else {               //user
-	document.formfilt.username_filt.value=cuser
-	filt()  //filtreaza dupa userul curent
-	document.getElementById("filttable").style.visibility = "hidden"
-	document.getElementById("apendbt").style.visibility = "hidden"
-	document.getElementById("bt_grvedit").style.visibility = "hidden"
-	document.getElementById("divseltipu").style.visibility = "hidden"
+	document.formfilt.username_filt.value=cuser;
+	filt();  //filtreaza dupa userul curent;
+	document.getElementById("filttable").style.visibility = "hidden";
+	document.getElementById("apendbt").style.visibility = "hidden";
+	document.getElementById("bt_grvedit").style.visibility = "hidden";
+	document.getElementById("divseltipu").style.visibility = "hidden";
 	}
 };
 
@@ -26,7 +26,7 @@ function SetFilterColumnWidth() {
 /*if(typeof window.getComputedStyle === 'function') alert ("function")
 else if (typeof window.getComputedStyle === 'undefined') alert ("undefined")
  else alert(typeof window.getComputedStyle);  */
-//urmatorul test deoarece getComputedStyle nu este definit in Internet Explorer v<9
+//urmatorul test deoarece getComputedStyle nu este definit in Internet Explorer v<=9
 if(typeof window.getComputedStyle === 'function') {
   function setwidth (t_par, f_par, pmarg) {
     compstyle=window.getComputedStyle(document.getElementById(t_par), null)
@@ -67,7 +67,8 @@ for(vnrc = 1; vnrc<=6; vnrc++)
 		aSort[vnrc-1]=0
 		aHeader_m[vnrc-1]=aHeader[vnrc-1]
 		}
-$('#ultp').load(gbase+'index.php/mnd3c/userlist/'+nrcol+'/'+sortord+"/"+escape(sFilt),
+//adresa controler se specifica fara numele clasei controler, trebuie numai numele functiei!!!!!
+      $('#ultp').load('userlist/'+nrcol+'/'+sortord+"/"+escape(sFilt),
 	function() {
 		aHeaderId=["t_username","t_name","t_email","t_phone","t_dentipu","t_dengrupv"]
 		for(vnrc = 1; vnrc<=6; vnrc++) document.getElementById(aHeaderId[vnrc-1]).innerHTML=aHeader_m[vnrc-1]
@@ -91,7 +92,7 @@ if (sFilt.length ==0) sFilt="-"
 if (sFilt=="-") document.getElementById("filtrare").style.backgroundColor="green"
 else document.getElementById("filtrare").style.backgroundColor="red"
 //var filtrow=$("#filtrare").html();	$("#filtrare").replaceWith(filtrow)   //NU merge!!
-$('#ultp').load(gbase+'index.php/mnd3c/userlist/0/""/'+escape(sFilt),
+$('#ultp').load('userlist/0/""/'+escape(sFilt),
 	function() {
     SetFilterColumnWidth()
     //dupa filtrare se reface sortarea initiala
@@ -114,7 +115,6 @@ function stergfilt() {
 
 //click pe row table userlist - pt Modificare
 function userrowclick(pusername,pname,pemail,pphone,pcodtipu,pcodgrupv,pdescription) {
-//lansat de evenimentul click pe row table userlist 
 //alert(rowid+"->"+document.getElementById(rowid+"_username").innerHTML)
 document.formuser.username.value=pusername
 document.formuser.password.value=""
@@ -133,20 +133,15 @@ iniusermodal('M')
 //click pe buton Adaugare
 function userappend() {
 //afiseaza forma modala pt adaugare user
-//alert("usn:"+document.formuser["username"].value)
-//$("#modaltitle").text("Adaugare") //modifica text element (paragraf modaltitle)
 document.getElementById("modaltitle").innerHTML="Adaugare"
 iniusermodal('A')
 document.getElementById("modaluser").style.visibility = "visible"
 }
 
-//var gmod //mod adaugare(A)/modificare(M) user, folosit la validare in formuser (uservalid())
 
 function iniusermodal(pmod) {
-//gmod=pmod
 if (pmod=='A')  {
   document.formuser.username.disabled=false
-  //document.formuser.password.disabled=false
   document.formuser.username.value='',
   document.formuser.name.value=''
   document.formuser.password.value=''
@@ -156,7 +151,6 @@ if (pmod=='A')  {
   }
 if (pmod=='M') {
   document.formuser.username.disabled=true
-  //document.formuser.password.disabled=true
   }
 document.getElementById("errmes").innerHTML="no message"
 document.getElementById("errmes").style.color="Gray"
@@ -167,10 +161,9 @@ document.getElementById("modaluser").style.visibility = "visible"
 //click buton "Inregistrare"  din formuser
 function userrecord() {
 //apeleaza procedura de inregistrare user: validare si ajax-post pt inreg in baza de date
-//validare date introduse in forma
 if (!uservalid()) return
 //apeleaza procedura controler cu AJAX si defineste functia callback
-$.post(gbase+'index.php/mnd3c/userrecord',
+$.post('userrecord',
 	{comanda:$("#modaltitle").text(),
 	username:document.formuser.username.value,
 	password:document.formuser.password.value,
@@ -208,7 +201,8 @@ function fdel(puser) {
 if (gtipu=="U") return	//userul obisnuit nu poate face stergere
 resp=confirm('Stergem '+puser)
 if (!resp) return
-$.post(gbase+'index.php/mnd3c/userdelete',
+//$.post(gbase+'index.php/mnd3c/userdelete',
+$.post('userdelete',
 	{username:puser},
 	function(data,status){
 		if (status=="success") 
@@ -231,7 +225,6 @@ var rb_grv=0
 
 //click radiobuton marc din forma grvlistform
 function setrbgrv(pcodgrv) {
-   //alert(pcodgrv)
    rb_grv=pcodgrv
 }
 
@@ -252,7 +245,7 @@ document.grvlistform.codgrv.focus()
 //click buton Inregistrez din forma grvlistform
 function grvrecord() {
   //trimite controlerului datele de inregistrat
-$.post(gbase+'index.php/mnd3c/grvrecord',
+$.post('grvrecord',
 	{comanda:document.grvlistform.cdagrv.value,
 	grvcode:document.grvlistform.codgrv.value,
 	grvname:document.grvlistform.dengrv.value,
@@ -263,7 +256,7 @@ $.post(gbase+'index.php/mnd3c/grvrecord',
 			if (data.substr(0,2)=="OK") {
             document.getElementById("errmesgrv").style.color="blue"
             //reincarca tabela cu lista grv, prin mnd3_grvtp.php
-            $('#grvtp').load(gbase+'index.php/mnd3c/grvlist')
+            $('#grvtp').load('grvlist')
             }   
          else document.getElementById("errmesgrv").style.color="red"
       }
@@ -276,7 +269,7 @@ $.post(gbase+'index.php/mnd3c/grvrecord',
 function grvdelete() {
 resp=confirm('Stergem Grupa de varsta cu cod '+rb_grv)
 if (!resp) return
-$.post(gbase+'index.php/mnd3c/grvdelete',
+$.post('grvdelete',
 	{grvcode:rb_grv},
 	function(data,status){
 		if (status=="success") {
@@ -284,7 +277,7 @@ $.post(gbase+'index.php/mnd3c/grvdelete',
 			if (data.substr(0,2)=="OK") {
             document.getElementById("errmesgrv").style.color="blue"
             //reincarca tabela cu lista grv, prin mnd3_grvtp.php
-            $('#grvtp').load(gbase+'index.php/mnd3c/grvlist')
+            $('#grvtp').load('grvlist')
             }   
          else document.getElementById("errmesgrv").style.color="red"
       }
@@ -295,14 +288,15 @@ $.post(gbase+'index.php/mnd3c/grvdelete',
 
 function grvlistload() {
 //incarca tabela cu lista de grupe varsta in fereastra modala grv
-$('#grvtp').load(gbase+'index.php/mnd3c/grvlist')
+$('#grvtp').load('grvlist')
+//$('#grvtp').load(gbase+'index.php/mnd3c/grvlist')
 }
 
 //click buton Iesire din grvlistform
 function iesgrvmodal() {
 document.getElementById("modalgrv").style.visibility = "hidden"
 //incarca select grupv si reface option curent prin parametrul transmis controlerului
-$('#grvselid').load(gbase+'index.php/mnd3c/grvselload/'+document.formuser.dengrupv_sel.value)
+$('#grvselid').load('grvselload/'+document.formuser.dengrupv_sel.value)
 }
 
 function uservalid() {
@@ -325,6 +319,7 @@ function uservalid() {
       return alert_err("Parola trebuie sa contina o litera mare si o cifra sau liniuta","password")
   }
   vphone=$.trim(document.formuser.phone.value)
+// phone number validate: 999-999-9999
   if(vphone!="") {
     regex=/^[2-9][0-9]{2}-[0-9]{3}-[0-9]{4}$/
     if (regex.test(vphone)==false)
@@ -338,9 +333,5 @@ function uservalid() {
       return alert_err("Email trebuie sa contina caracterul @, precedat de user si urmat de host","email")
   }
   return true
-/* phone number validate:
-999-999-9999
-^[0-9]{3}-[0-9]{3}-[0-9]{4}$
-*/
 }
 
