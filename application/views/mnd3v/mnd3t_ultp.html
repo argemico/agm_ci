@@ -11,14 +11,16 @@
   <!--tabela propriuzisa-->
   {userlist}
     <!--<tr id='{username}' onclick="userrowclick('{username}','{name}','{email}','{phone}','{codtipu}','{codgrupv}','{description}')">-->
-    <tr id='{username}' >
-      <td title="Click pentru Modificare date user" onclick="userrowclick('{username}','{name}','{email}','{phone}','{codtipu}','{codgrupv}','{description}')">{username}</td>
-      <td title="{description}">{name}</td> 
+    <tr id='{username}'
+    onclick="userrowclick('{username}','{name}','{email}','{phone}','{codtipu}','{codgrupv}','{description}')"
+    title="{description}" >
+      <td title="Click pentru Modificare date user" >{username}</td>
+      <td >{name}</td> 
       <td>{email}</td> 
       <td>{phone}</td> 
       <b><td>{dentipu}</td> </b>
       <td>{dengrupv}</td>
-		<td title="Click pentru Eliminare user" onclick="fdel('{username}')" style="Color:brown">Del</td>
+		<td title="Click pentru Eliminare user" onclick="fdel('{username}',event)" style="Color:brown">Del</td>
 	 </tr>
   {/userlist}
 </table>

@@ -26,8 +26,9 @@ function SetFilterColumnWidth() {
 /*if(typeof window.getComputedStyle === 'function') alert ("function")
 else if (typeof window.getComputedStyle === 'undefined') alert ("undefined")
  else alert(typeof window.getComputedStyle);  */
-//urmatorul test deoarece getComputedStyle nu este definit in Internet Explorer v<=9
-if(typeof window.getComputedStyle === 'function') {
+//urmatorul test deoarece getComputedStyle nu este definit in Internet Explorer v<=9 ()merg ambele if-uri !!)
+if(window.getComputedStyle) {
+//if(typeof window.getComputedStyle === 'function') {
   function setwidth (t_par, f_par, pmarg) {
     compstyle=window.getComputedStyle(document.getElementById(t_par), null)
     //document.getElementById(f_par).style.width=compstyle.width
@@ -115,6 +116,7 @@ function stergfilt() {
 
 //click pe row table userlist - pt Modificare
 function userrowclick(pusername,pname,pemail,pphone,pcodtipu,pcodgrupv,pdescription) {
+
 //alert(rowid+"->"+document.getElementById(rowid+"_username").innerHTML)
 document.formuser.username.value=pusername
 document.formuser.password.value=""
@@ -196,12 +198,17 @@ document.getElementById("modaluser").style.visibility = "hidden"
 }
 
 //click Delete in tabela de useri
-function fdel(puser) {
+function fdel(puser, event) {
 //sterge user curent
-if (gtipu=="U") return	//userul obisnuit nu poate face stergere
+//opreste propagarea evenimentului onclick la elementul <tr> (trebuie pus inainte de instr confirm pt a stopa propagarea!)
+if (event.stopPropagation) event.stopPropagation(); // Standard model
+else event.cancelBubble = true; // IE
+//userul obisnuit nu poate face stergere
+if (gtipu=="U") return
+//confirmare stergere	
 resp=confirm('Stergem '+puser)
 if (!resp) return
-//$.post(gbase+'index.php/mnd3c/userdelete',
+//apel proc delete cu post
 $.post('userdelete',
 	{username:puser},
 	function(data,status){
