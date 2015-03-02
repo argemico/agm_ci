@@ -17,53 +17,66 @@ $conn=$this->load->database($connstr,TRUE);*/
 //$this->load->database($connstr);  //nu merg sql-urile!!, baza de date trebuie specificata in database.php
 //$this->load->database();		//autoload in config
 $usern=$this->input->post("user");
-$sel="SELECT password, codtipu, email FROM user WHERE username='".$usern."'";
+$sel="SELECT password, codtipu FROM user WHERE username='".$usern."'";
 //$query1=$conn->query($sel);
 $query1=$this->db->query($sel);
 if(!$query1) { 
-	echo $this->database_error();
-	return '0';
+	$rez=$this->database_error();
+	return $rez;
    }
 if ($query1->num_rows()==0) {
-  echo "<h3 style='color:red'>User eronat, reintroduceti user</h3>";
-  return '0';
-  }
+   $rez="User eronat, reintroduceti user";
+   return $rez;
+   //return '0';
+   }
+//verificare parola introdusa
+$parola=md5($this->input->post("parola"));
 $row=$query1->row_array();
-//daca butonul nu este de tip submit, sau daca submit s-a facut din functie JavaScript atunci nu avem setat $_POST['buton']
-if ( isset($_POST['btretrpar'])) {
-  //comanda "Retransmite_parola"
-  $email=$row["email"];
-  //genereaza un numar aleator
-  $nraleat=rand(10000,99999);
-  $newpass="P".$nraleat;
-  //creeaza si trimite parola
-  //$vr=mail($row["email"],"Parola",$newpass);
-  $vr=TRUE;
-  if ($vr) {
-		//inreg parola
-      $md5newpass=md5($newpass);
-		$sql="UPDATE user SET password='".$md5newpass."' WHERE username='".$usern."'";
-      $query1=$this->db->query($sql);
-      if(!$query1)
-         echo "<h3 style='color:red'>".$this->database_error()."</h3>";
-      else
-         echo "<h3 style='color:blue'>Noua parola a fost transmisa la adresa de email ".$email."</h3>";
-		}
-  else
-      echo "<h3 style='color:red'>Eroare transmitere email</h3>";
-    return '0';
-  }
-else {
-  //comanda "Login"
-  $parola=md5($this->input->post("parola"));
-  if ($row["password"]!=$parola) {  
-    echo "<h3 style='color:red'>Parola eronata, reintroduceti parola</h3>";
-    return '0';
+if ($row["password"]!=$parola) {  
+    $rez="Parola eronata, reintroduceti parola";
+   return $rez;
+   //return '0';
     }
-  else
+else
    //returneaza cod tip utilizator (1=Admin, 2=User)
    return $row["codtipu"];
 }
+
+
+public function retransmite() {
+//comanda "Retransmite_parola"
+$usern=$this->input->post("user");
+$sel="SELECT email FROM user WHERE username='".$usern."'";
+$query1=$this->db->query($sel);
+if(!$query1) { 
+	$rez=$this->database_error();
+	return $rez;
+   }
+if ($query1->num_rows()==0) {
+   $rez="User eronat, reintroduceti user";
+   return $rez;
+   }
+$row=$query1->row_array();
+$email=$row["email"];
+//genereaza un numar aleator
+$nraleat=rand(10000,99999);
+$newpass="P".$nraleat;
+//creeaza si trimite parola
+//$vr=mail($row["email"],"Parola",$newpass);
+$vr=TRUE;
+if ($vr) {
+	//inreg parola
+   $md5newpass=md5($newpass);
+	$sql="UPDATE user SET password='".$md5newpass."' WHERE username='".$usern."'";
+   $query1=$this->db->query($sql);
+   if(!$query1)
+      $rez=$this->database_error();
+   else
+      $rez="Noua parola a fost transmisa la adresa de email ".$email;
+   }
+else
+   $rez="EROARE transmitere email";
+return $rez;
 }
 
 

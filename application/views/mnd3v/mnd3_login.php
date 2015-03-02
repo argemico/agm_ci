@@ -9,16 +9,18 @@ p {margin-left:20mm}
 <title>Adaug_Cont_Utilizator</title>
 </head>
 <body>
+<h3 style='color:red'><?php echo $errmess; ?></h3>
 <H3>Identificare utilizator</H3>
 <?php
 //echo validation_errors();  //se scoate afara atunci cand se foloseste form_error() pt plasarea mesajului de eroare
 $form_atr=array('name'=>'flogin', 'class'=>'form-horizontal');	//creeaza atribute forma
 //param lui form_open() indica adresa URL folosita de Submit - adica functia de controler lansata, care va fi aceeasi cu functia care a lansat acest view, adica mnd3_login.php; al doilea param adauga atribute elementului form
+//codeigniter transforma adresa relativa in adresa absoluta ()in html)
 echo form_open('mnd3c/login',$form_atr);
 ?>
   <!--input type="submit" name="btlogin" value="LOGIN" onclick="return reqpassword()" /-->
-  <P>Utilizator: <input type="text" name="user" autofocus/>  <?php echo form_error('user'); ?> </P>
-  <P>Parola: <input type="password" name="parola" /> <?php echo form_error('parola'); ?> </P>
+  <P>Utilizator: <input type="text" name="user" autofocus value="arba_g"/>  <?php echo form_error('user'); ?> </P>
+  <P>Parola: <input type="password" name="parola" value="AG1234"/> <?php echo form_error('parola'); ?> </P>
   <!-- Bootstrap horizontal form merge pe Chrome dar nu merge pe Explorer 9
   <div class="form-group">
   <label class="control-label col-sm-1" for="iduser">Utilizator</label>
@@ -33,6 +35,5 @@ echo form_open('mnd3c/login',$form_atr);
   <p><input type="submit" name="btlogin" value="LOGIN" class="btn btn-primary" style="margin-top:5mm; margin-left:12mm;" />  </p>
   <p><input type="submit" name="btretrpar" value="Retransmite_parola" class="btn btn-link" 
     title="Creeaza o noua parola si o transmite in mail-ul userului" style="margin-top:5mm" /> </p>
-
 </form>
 </body>

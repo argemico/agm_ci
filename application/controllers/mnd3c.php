@@ -19,11 +19,14 @@ public function login()
   //2->prelucrare date introduse
 {
 //seteaza regulile de validare
-$this->form_validation->set_rules('user', 'User', 'required|min_length[2]');
+$this->form_validation->set_rules('user', 'User', 'required|callback_validuser');
 $this->form_validation->set_rules('parola', '', 'callback_reqpass|min_length[2]');
 $this->form_validation->set_message('reqpass','Completati parola!');
 $this->form_validation->set_message('required', '%s este obligatoriu de completat!');
+$this->form_validation->set_message('validuser','User inexistent!');
+//
 $data["baseurl"]=base_url();
+$data["errmess"]="";
 //testare respectare rules (la prima trecere, cand forma inca nu exista, se obtine False
 if ($this->form_validation->run() === FALSE) {
   //1->afisare forma introducere date: se executa la prima trecere SAU daca se obtine eroare de validare in forma
@@ -31,60 +34,67 @@ if ($this->form_validation->run() === FALSE) {
    }
 else {
   //2->prelucrare date introduse (validare user): se executa la a n-a trecere (n>=2), cand nu avem eroare de validare in forma
-   $rez=$this->Model->login();  
-  //if($this->Model->prel_user())	//login executat cu succes
-  switch($rez) {
-  case 0:
-    //login esuat, se reincarca forma login
-    $this->load->view('mnd3v/mnd3_login.php',$data);
-    break;
-  case 1:
-    //S-a conectat un utilizator de tip Admin
-    $this->users('');
-    break;
-  case 2:
-    //S-a conectat un utilizator de tip User
-   $this->users($this->input->post("user"));
-    break;
-  }
+  if ($this->input->post("btlogin")) {
+      $rez=$this->Model->login();  
+      //if($this->Model->prel_user())	//login executat cu succes
+      switch($rez) {
+      /*case 0:
+      //login esuat, se reincarca forma login
+         $data["errmess"]="Parola eronata!";
+         $this->load->view('mnd3v/mnd3_login.php',$data);
+         break;*/
+      case 1:
+         //S-a conectat un utilizator de tip Admin
+         $this->users('');
+         break;
+      case 2:
+         //S-a conectat un utilizator de tip User
+         $this->users($this->input->post("user"));
+         break;
+      default:
+         //eroare
+         $data["errmess"]=$rez;
+         $this->load->view('mnd3v/mnd3_login.php',$data);
+      }
+   }
+   else {
+      //Retransmite_parola
+      $rez=$this->Model->retransmite();  
+      $data["errmess"]=$rez;
+      $this->load->view('mnd3v/mnd3_login.php',$data);
+   }
 }
 }
 
-
-public function reqpass($passvalue) {
-//parola este obligatorie numai daca s-a apasat pe butonul Login
-if (isset($_POST['btlogin']) and !$this->input->post("parola")) return FALSE;
+//callback set_rules pt password
+public function reqpass($fieldvalue) {
+//parola este obligatorie numai daca s-a apasat pe butonul Login, nu si pt RetransmiteParola
+if ($this->input->post("btlogin") and !$this->input->post("parola")) return FALSE;
 else return TRUE;
 }
 
 
-public function users($ptipu)
-{
+//callback set_rules pt user
+public function validuser($fieldvalue) {
+//verifica existenta user din Post, dar inca nu s-a facut Post!
+/*if ($this->Model->usercount()==0) return FALSE;
+else return TRUE;*/
+return TRUE;
+}
+
+
+public function users($ptipu) {
 //afisare lista utilizatori in vederea editarii
-if (! isset($_POST['submit'])) 
-  //1-a trecere, afisare view
-  {
+   //daca butonul nu este de tip submit, sau daca submit s-a facut din functie JavaScript atunci nu avem setat $_POST['buton']
+//if (! isset($_POST['submit']))   //{1-a trecere, afisare view
   //apelare in Model metoda generare date in tabela users
-	$baseurl=base_url();
-	$baseurl_arr=array('base_url'=>$baseurl);
+	//$baseurl=base_url();
+	$baseurl_arr=array('base_url'=>base_url());
 	$tipu_arr=array('tipucda'=>$ptipu);
-/*	$users=$this->Model->users_sel(0);	//returneaza tabela users
-	$users_arr=array('userlist'=>$users);	//array de array-uri
-	$tipu=$this->Model->tipu_sel();	//returneaza tabela tipuser
-	$tipu_arr=array('tipulist'=>$tipu);
-	$grupv=$this->Model->grupv_sel();	//returneaza tabela grupv
-	$grupv_arr=array('grupvlist'=>$grupv);
-*/	
 	$userlist_arr=$this->getuserlist(0,"","-");
 	$data=array_merge($baseurl_arr,$tipu_arr,$userlist_arr);
 	$this->parser->parse('mnd3v/mnd3t_users.html', $data);
-  //afisare view
-  //$this->load->view('mnd3v/mnd3_users.php');  
-  }
-else {
-  //2-a trecere, prelucrare date
-  echo "prelucrare date";
-  }
+//else {//2-a trecere, prelucrare date}
 }
 
 public function getuserlist($nrcol,$sortorder,$filt) {
