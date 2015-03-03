@@ -47,15 +47,37 @@ var gbase="{base_url}"
   <div>
   <form name="formuser">
     <p id="modaltitle" style="text-align:center;">Editare</p>
-    <table>
-      <tr><td>Username</td><td><input type="text" name="username" /></td></tr>
-      <tr><td>Parola</td><td><input type="text" name="password"
-         title="Trebuie sa contina o litera mare si o cifra sau liniuta"/></td></tr>
-      <tr><td>Nume</td><td><input type="text" name="name" /></td></tr>
-      <tr><td>Email</td><td><input type="text" name="email" /></td></tr>
-      <tr><td>Telefon</td><td><input type="text" name="phone"
-         title="Format 999-999-9999"/></td></tr>
-      <tr><td>Descriere User</td><td><textarea name="description" cols="30" rows="3" ></textarea></td></tr>
+    <table id="tuseredit">
+      <tr>
+         <td>Username</td>
+         <td><input type="text" name="username" /></td>
+         <td id="errusername"></td>
+      </tr>
+      <tr>
+         <td>Parola</td>
+         <td><input type="text" name="password" title="Trebuie sa contina o litera mare si o cifra sau liniuta"/></td>
+         <td id="errparola"></td>
+      </tr>
+      <tr>
+         <td>Nume</td>
+         <td><input type="text" name="name" /></td>
+          <td id="errnume"></td>
+      </tr>
+      <tr>
+         <td>Email</td>
+         <td><input type="text" name="email" /></td>
+         <td id="erremail"></td>
+      </tr>
+      <tr>
+         <td>Telefon</td>
+         <td><input type="text" name="phone" title="Format 999-999-9999"/></td>
+         <td id="errtelefon"></td>
+      </tr>
+      <tr>
+         <td>Descriere User</td>
+         <td><textarea name="description" cols="18" rows="3" ></textarea></td>
+          <td id="errdescr"></td>
+      </tr>
       <!-- daca se introduce tagul select in table nu se incarca cu optiuni !?! -->
     </table>
     <p>Tip User<select name="dentipu_sel">
@@ -84,10 +106,10 @@ var gbase="{base_url}"
    </div>
    <input type="hidden" name="cdagrv" value="" />
    <input type="Button" onclick="grvappend()" value="Adaug" id="grvapendbt" />
-   <input type="Button" onclick="grvmodif()" value="Modific" id="grvmodifbt "/>
-   <input type="Button" onclick="grvdelete()" value="Sterg" id="grvdelbt "/>
+   <input type="Button" onclick="grvmodif()" value="Modific" id="grvmodifbt"/>
+   <input type="Button" onclick="grvdelete()" value="Sterg" id="grvdelbt"/>
    <p>Cod_grupa<input type="text" name="codgrv" size="2" />   Denumire_grupa<input type="text" name="dengrv" size="40" /></P>
-   <input type="Button" onclick="grvrecord()" value="Inregistrez" id="grvrecbt "/>
+   <input type="Button" onclick="grvrecord()" value="Inregistrez" id="grvrecbt"/>
    <p id="errmesgrv" style="color:grey">no message</p>
    <p> <input type="Button" onclick="iesgrvmodal()" name="Iesire" value="Iesire" /></p> 
   </form>

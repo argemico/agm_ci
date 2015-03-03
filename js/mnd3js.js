@@ -179,13 +179,13 @@ $.post('userrecord',
 		if (status=="success") {
 			$("#errmes").text(data)
 			if (data.substr(0,2)=="OK") {
-        document.getElementById("errmes").style.color="blue"
-        //$("#errmes").effect( "pulsate",{times:50}, 3000 );
-        $("#errmes").effect( "shake", {times:4}, 1000 );
-        if (gtipu=='A')stergfilt()	//mod Admin: sterge filtru si reincarca lista useri
-        else fsort(1)  //mod User: apeleaza sortare pentru reincarcare date in lista/tabela
-        }
-      else document.getElementById("errmes").style.color="red"
+            document.getElementById("errmes").style.color="blue"
+            //$("#errmes").effect( "pulsate",{times:50}, 3000 );
+            $("#errmes").effect( "shake", {times:4}, 1000 );
+            if (gtipu=='A')stergfilt()	//mod Admin: sterge filtru si reincarca lista useri
+            else fsort(1)  //mod User: apeleaza sortare pentru reincarcare date in lista/tabela
+            }
+         else document.getElementById("errmes").style.color="red"
 			}
 		else $("#errmes").text(status)
     }
@@ -307,38 +307,42 @@ $('#grvselid').load('grvselload/'+document.formuser.dengrupv_sel.value)
 }
 
 function uservalid() {
-  function alert_err(pnumecamp,pinputname) {
-    alert (pnumecamp)
-    document.formuser[pinputname].focus()
-    return false
+var vinderr=false
+document.getElementById("errusername").innerHTML="" 
+document.getElementById("errparola").innerHTML=""
+document.getElementById("errtelefon").innerHTML=""
+document.getElementById("erremail").innerHTML=""
+     function mes_err(pmes,pinputid) {
+      document.getElementById(pinputid).innerHTML=pmes
+      vinderr=true
+      //document.formuser[pinputname].focus()
     }
-  //if (gmod=="A") {  //adaugare in formuser
-  if (document.getElementById("modaltitle").innerHTML=="Adaugare") {  //adaugare in formuser
-    if($.trim(document.formuser.username.value)=="")
-      return alert_err("UserName este obligatoriu de completat","username")
-    if(document.formuser.password.value.trim=="")
-      return alert_err("Parola este obligatorie de completat","password")
+ if (document.getElementById("modaltitle").innerHTML=="Adaugare") {  //Adaugare in formuser
+    if($.trim(document.formuser.username.value)=="") 
+      mes_err("UserName este obligatoriu de completat", "errusername")
+    if($.trim(document.formuser.password.value)=="")
+      mes_err("Parola este obligatorie de completat","errparola")
   }
   vpassword=$.trim(document.formuser.password.value)
   if(vpassword!="") {
     regex=/^(?=.*[A-Z])((?=.*[0-9])|(?=.*[_-]))/
     if (regex.test(vpassword)==false)
-      return alert_err("Parola trebuie sa contina o litera mare si o cifra sau liniuta","password")
-  }
+      mes_err("Parola trebuie sa contina o litera mare si o cifra sau liniuta","errparola")
+   }
   vphone=$.trim(document.formuser.phone.value)
 // phone number validate: 999-999-9999
   if(vphone!="") {
     regex=/^[2-9][0-9]{2}-[0-9]{3}-[0-9]{4}$/
     if (regex.test(vphone)==false)
-      return alert_err("Numar telefon este in format 999-999-9999, si incepe cu 3 sau mai mare","phone")
+      mes_err("Numar telefon este in format 999-999-9999, si incepe cu 3 sau mai mare","errtelefon")
   }
   vemail=$.trim(document.formuser.email.value)
   //if (vemail.indexOf("@")==-1)
   if (vemail!="") {
      regex=/.+@.+/
     if (regex.test(vemail)==false)
-      return alert_err("Email trebuie sa contina caracterul @, precedat de user si urmat de host","email")
+      mes_err("Email trebuie sa contina caracterul @, precedat de user si urmat de host","erremail")
   }
-  return true
+  return !vinderr
 }
 
